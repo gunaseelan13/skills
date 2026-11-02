@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planboard · Projects</title>
+  <style>
+    :root {
+      --page: #f4f5f7; --card: #ffffff; --ink: #1b1d21; --ink-soft: #5c6370; --ink-faint: #8a909b;
+      --outline: #e2e4e8; --accent: #0a9b4b; --accent-soft: #e3f4ea; --on-accent: #ffffff;
+      --space-xs: 4px; --space-sm: 8px; --space-md: 12px; --space-lg: 16px; --space-xl: 24px;
+      --radius-sm: 8px; --radius-md: 12px; --radius-button: 24px; --height-button: 44px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --page: #121316; --card: #1b1d21; --ink: #eceef2; --ink-soft: #a2a8b3; --ink-faint: #737a86;
+        --outline: #2c2f35; --accent: #21b866; --accent-soft: #163222; --on-accent: #06210f;
+      }
+    }
+    :root[data-theme="dark"] {
+      --page: #121316; --card: #1b1d21; --ink: #eceef2; --ink-soft: #a2a8b3; --ink-faint: #737a86;
+      --outline: #2c2f35; --accent: #21b866; --accent-soft: #163222; --on-accent: #06210f;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--page); color: var(--ink);
+      font: 14px/1.45 "Inter", system-ui, -apple-system, sans-serif;
+      display: grid; grid-template-columns: 232px 1fr;
+    }
+    svg.icon { width: 20px; height: 20px; fill: currentColor; flex: none; }
+
+    /* Sidebar */
+    .side {
+      background: var(--card); border-right: 1px solid var(--outline);
+      display: flex; flex-direction: column; padding: var(--space-lg) var(--space-md);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 20px; font-weight: 650; font-size: 15px; }
+    .brand-mark {
+      width: 28px; height: 28px; border-radius: 8px; background: var(--accent); color: var(--on-accent);
+      display: grid; place-items: center;
+    }
+    .brand-mark svg { width: 18px; height: 18px; }
+    .nav { display: flex; flex-direction: column; gap: 2px; }
+    .nav a {
+      display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: var(--radius-sm);
+      color: var(--ink-soft); text-decoration: none; font-weight: 500;
+    }
+    .nav a.on { background: var(--accent-soft); color: var(--ink); }
+    .nav a.on svg { color: var(--accent); }
+    .nav-label { margin: 20px 10px 6px; font-size: 12px; color: var(--ink-faint); font-weight: 500; }
+    .nav-empty { margin: 0 10px; font-size: 13px; color: var(--ink-faint); }
+    .side-foot { margin-top: auto; }
+    .me { display: flex; align-items: center; gap: 10px; padding: 10px; margin-top: 6px; border-top: 1px solid var(--outline); }
+    .avatar {
+      width: 30px; height: 30px; border-radius: 50%; background: var(--accent-soft); color: var(--accent);
+      display: grid; place-items: center; font-size: 12px; font-weight: 650;
+    }
+    .me-name { font-weight: 550; }
+    .me-mail { font-size: 12px; color: var(--ink-faint); }
+
+    /* Main */
+    .main { display: flex; flex-direction: column; min-width: 0; }
+    .top {
+      height: 64px; display: flex; align-items: center; gap: var(--space-md); padding: 0 28px;
+      border-bottom: 1px solid var(--outline); background: var(--card);
+    }
+    .top h1 { margin: 0; font-size: 18px; font-weight: 650; }
+    .crumb { color: var(--ink-faint); font-size: 13px; margin-left: 2px; }
+    .search {
+      margin-left: auto; width: 280px; height: 36px; display: flex; align-items: center; gap: 8px;
+      padding: 0 12px; border-radius: 18px; background: var(--page); color: var(--ink-faint); font-size: 13px;
+    }
+    .search svg { width: 18px; height: 18px; }
+    .kbd { margin-left: auto; font-size: 11px; border: 1px solid var(--outline); border-radius: 5px; padding: 0 5px; }
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-soft);
+    }
+
+    /* The empty state, built from the skill's structure */
+    .content { flex: 1; display: grid; place-items: start center; padding-top: 8px; }
+    .empty-film {
+      --film-page: var(--page); --film-card: var(--card); --film-ink: var(--ink);
+      --film-ink-soft: var(--ink-soft); --film-outline: var(--outline);
+      --film-accent: var(--accent); --film-on-accent: var(--on-accent);
+      width: 440px; display: flex; flex-direction: column; align-items: center; padding-top: var(--space-xl);
+    }
+    .empty-film-canvas { width: 100%; height: 380px; display: block; }
+    .empty-film-title { margin: var(--space-md) 0 0; font-size: 20px; font-weight: 650; text-align: center; }
+    .empty-film-desc { margin: var(--space-xs) 0 0; padding: 0 var(--space-lg); color: var(--ink-soft); text-align: center; font-size: 15px; }
+    .empty-film-button {
+      width: 100%; height: var(--height-button); border: 0; border-radius: var(--radius-button);
+      font: 600 15px "Inter", system-ui, sans-serif; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .empty-film-primary { margin-top: var(--space-xl); background: var(--accent); color: var(--on-accent); }
+    .empty-film-secondary { margin-top: var(--space-md); background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 1px var(--outline); }
+  </style>
+</head>
+<body>
+  <aside class="side">
+    <div class="brand"><span class="brand-mark"><!-- Material Symbols Rounded "stacks" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M460.5-413.5Q451-416 442-421L104-605q-11-6-15.5-15T84-640q0-11 4.5-20t15.5-15l338-184q9-5 18.5-7.5T480-869q10 0 19.5 2.5T518-859l338 184q11 6 15.5 15t4.5 20q0 11-4.5 20T856-605L518-421q-9 5-18.5 7.5T480-411q-10 0-19.5-2.5ZM480-491l273-149-273-149-273 149 273 149Zm0-149Zm0 309 314-171q2-1 19-5 17 0 28.5 11.5T853-467q0 11-5 20t-16 15L518-261q-9 5-18.5 7.5T480-251q-10 0-19.5-2.5T442-261L128-432q-11-6-16-15t-5-20q0-17 11.5-28.5T147-507q5 0 9.5 1.5t9.5 3.5l314 171Zm0 160 314-171q2-1 19-5 17 0 28.5 11.5T853-307q0 11-5 20t-16 15L518-101q-9 5-18.5 7.5T480-91q-10 0-19.5-2.5T442-101L128-272q-11-6-16-15t-5-20q0-17 11.5-28.5T147-347q5 0 9.5 1.5t9.5 3.5l314 171Z"/></svg></span>Planboard</div>
+    <nav class="nav">
+      <a href="#"><!-- Material Symbols Rounded "home" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M240-200h120v-200q0-17 11.5-28.5T400-440h160q17 0 28.5 11.5T600-400v200h120v-360L480-740 240-560v360Zm-80 0v-360q0-19 8.5-36t23.5-28l240-180q21-16 48-16t48 16l240 180q15 11 23.5 28t8.5 36v360q0 33-23.5 56.5T720-120H560q-17 0-28.5-11.5T520-160v-200h-80v200q0 17-11.5 28.5T400-120H240q-33 0-56.5-23.5T160-200Zm320-270Z"/></svg>Home</a>
+      <a href="#"><!-- Material Symbols Rounded "task_alt" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q48 0 93.5 11t87.5 32q15 8 19.5 24t-5.5 30q-10 14-26.5 18t-32.5-4q-32-15-66.5-23t-69.5-8q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160q133 0 226.5-93.5T800-480q0-8-.5-15.5T798-511q-2-17 6.5-32.5T830-564q16-5 30 3t16 24q2 14 3 28t1 29q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-56-328 372-373q11-11 27.5-11.5T852-781q11 11 11 28t-11 28L452-324q-12 12-28 12t-28-12L282-438q-11-11-11-28t11-28q11-11 28-11t28 11l86 86Z"/></svg>My tasks</a>
+      <a href="#" class="on"><!-- Material Symbols Rounded "folder" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h207q16 0 30.5 6t25.5 17l57 57h320q33 0 56.5 23.5T880-640v400q0 33-23.5 56.5T800-160H160Zm0-80h640v-400H447l-80-80H160v480Zm0 0v-480 480Z"/></svg>Projects</a>
+      <a href="#"><!-- Material Symbols Rounded "calendar_month" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-40q0-17 11.5-28.5T280-880q17 0 28.5 11.5T320-840v40h320v-40q0-17 11.5-28.5T680-880q17 0 28.5 11.5T720-840v40h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-188.5-11.5Q280-423 280-440t11.5-28.5Q303-480 320-480t28.5 11.5Q360-457 360-440t-11.5 28.5Q337-400 320-400t-28.5-11.5ZM640-400q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-188.5-11.5Q280-263 280-280t11.5-28.5Q303-320 320-320t28.5 11.5Q360-297 360-280t-11.5 28.5Q337-240 320-240t-28.5-11.5ZM640-240q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>Calendar</a>
+      <a href="#"><!-- Material Symbols Rounded "bar_chart" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M680-160q-17 0-28.5-11.5T640-200v-200q0-17 11.5-28.5T680-440h80q17 0 28.5 11.5T800-400v200q0 17-11.5 28.5T760-160h-80Zm-240 0q-17 0-28.5-11.5T400-200v-560q0-17 11.5-28.5T440-800h80q17 0 28.5 11.5T560-760v560q0 17-11.5 28.5T520-160h-80Zm-240 0q-17 0-28.5-11.5T160-200v-360q0-17 11.5-28.5T200-600h80q17 0 28.5 11.5T320-560v360q0 17-11.5 28.5T280-160h-80Z"/></svg>Reports</a>
+    </nav>
+    <div class="nav-label">Your projects</div>
+    <div class="nav-empty">None yet</div>
+    <div class="side-foot">
+      <nav class="nav"><a href="#"><!-- Material Symbols Rounded "settings" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M433-80q-27 0-46.5-18T363-142l-9-66q-13-5-24.5-12T307-235l-62 26q-25 11-50 2t-39-32l-47-82q-14-23-8-49t27-43l53-40q-1-7-1-13.5v-27q0-6.5 1-13.5l-53-40q-21-17-27-43t8-49l47-82q14-23 39-32t50 2l62 26q11-8 23-15t24-12l9-66q4-26 23.5-44t46.5-18h94q27 0 46.5 18t23.5 44l9 66q13 5 24.5 12t22.5 15l62-26q25-11 50-2t39 32l47 82q14 23 8 49t-27 43l-53 40q1 7 1 13.5v27q0 6.5-2 13.5l53 40q21 17 27 43t-8 49l-48 82q-14 23-39 32t-50-2l-60-26q-11 8-23 15t-24 12l-9 66q-4 26-23.5 44T527-80h-94Zm7-80h79l14-106q31-8 57.5-23.5T639-327l99 41 39-68-86-65q5-14 7-29.5t2-31.5q0-16-2-31.5t-7-29.5l86-65-39-68-99 42q-22-23-48.5-38.5T533-694l-13-106h-79l-14 106q-31 8-57.5 23.5T321-633l-99-41-39 68 86 64q-5 15-7 30t-2 32q0 16 2 31t7 30l-86 65 39 68 99-42q22 23 48.5 38.5T427-266l13 106Zm42-180q58 0 99-41t41-99q0-58-41-99t-99-41q-59 0-99.5 41T342-480q0 58 40.5 99t99.5 41Zm-2-140Z"/></svg>Settings</a></nav>
+      <div class="me">
+        <span class="avatar">AR</span>
+        <div><div class="me-name">Asha Rao</div><div class="me-mail">asha@example.com</div></div>
+      </div>
+    </div>
+  </aside>
+  <div class="main">
+    <header class="top">
+      <h1>Projects</h1><span class="crumb">· 0</span>
+      <div class="search"><!-- Material Symbols Rounded "search" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>Search projects and tasks<span class="kbd">⌘K</span></div>
+      <span class="icon-btn"><!-- Material Symbols Rounded "notifications" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M200-200q-17 0-28.5-11.5T160-240q0-17 11.5-28.5T200-280h40v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h40q17 0 28.5 11.5T800-240q0 17-11.5 28.5T760-200H200Zm280-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"/></svg></span>
+    </header>
+    <div class="content" id="app"></div>
+  </div>
+  <script type="module">
+    import { emptyFilmState } from './skeleton-film.js'
+    import { webappFilm } from './webapp-film.js'
+
+    const params = new URLSearchParams(location.search)
+    if (params.get('theme')) document.documentElement.dataset.theme = params.get('theme')
+    const { root, film } = emptyFilmState(document.getElementById('app'), {
+      script: webappFilm,
+      title: 'Keep work in projects',
+      description: 'Group related tasks so the whole team sees what is next.',
+      primary: 'New project',
+      secondary: 'Import from CSV',
+    })
+    root.querySelector('.empty-film-primary').insertAdjacentHTML('afterbegin', `<!-- Material Symbols Rounded "add" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/></svg>`)
+    root.querySelector('.empty-film-secondary').insertAdjacentHTML('afterbegin', `<!-- Material Symbols Rounded "upload_file" --><svg class="icon" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-367v127q0 17 11.5 28.5T480-200q17 0 28.5-11.5T520-240v-127l36 36q6 6 13.5 9t15 2.5q7.5-.5 14.5-3.5t13-9q11-12 11.5-28T612-388L508-492q-6-6-13-8.5t-15-2.5q-8 0-15 2.5t-13 8.5L348-388q-12 12-11.5 28t12.5 28q12 11 28 11.5t28-11.5l35-35ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h287q16 0 30.5 6t25.5 17l194 194q11 11 17 25.5t6 30.5v447q0 33-23.5 56.5T720-80H240Zm280-560v-160H240v640h480v-440H560q-17 0-28.5-11.5T520-640ZM240-800v200-200 640-640Z"/></svg>`)
+    // ?t=6.4 draws that second of the script and holds it, for captures.
+    if (params.has('t')) {
+      Object.defineProperty(film, 't', { get: () => Number(params.get('t')) })
+      film.draw()
+    }
+  </script>
+</body>
+</html>

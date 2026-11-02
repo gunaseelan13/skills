@@ -1,6 +1,6 @@
 ---
 name: empty-film-state
-description: Design and build an empty state or feature explainer as a short looping skeleton film on a half phone (or browser window), with a title, one-line description and actions. Use when a list or page has nothing in it yet, when a feature needs a "how it works" before it is turned on, or when asked for an "empty film state", "empty screen film", "explainer film" or "EmptyFilmState".
+description: Design and build an empty state or feature explainer as a short looping skeleton film on a half phone (or browser window), with a title, one-line description and actions. Use when a list or page has nothing in it yet, when a feature needs a "how it works" before it is turned on, or when asked for an "empty film state", "empty screen film", "explainer film" or "EmptyFilmState", on the web, Android or iOS.
 license: MIT
 ---
 
@@ -25,8 +25,16 @@ skeleton UI on the top half of a device that fades into the page, then what it i
 └───────────────────────────┘
 ```
 
-Build it on the web from `references/web.md`, with a working engine in `assets/skeleton-film.js`.
-On another platform, port that engine and keep the rules.
+Build it from the reference for the platform. Each comes with a working engine, so copy it
+rather than re-implementing the film:
+
+| Platform | Reference | Engine and example |
+|---|---|---|
+| Web (any framework) | `references/web.md` | `assets/skeleton-film.js`; examples `webapp-film.js` (desktop app) and `example-film.js` (mobile) |
+| Android (Views, Material 3) | `references/android.md` | `assets/android/` |
+| iOS (SwiftUI) | `references/ios.md` | `assets/ios/` |
+
+On any other platform, port the web engine and keep the rules.
 
 The rules below hold on every platform. A state that breaks one is a bug, even when it looks fine.
 
@@ -88,7 +96,7 @@ linear only for spreads and progress. Cross-fades between screens overlap by 0.3
 - Play 3 loops while visible, then rest on one chosen frame: the one that best explains the
   feature on its own (the result showing, not a blank screen).
 - Pause while off screen or hidden. Resume where it was.
-- With reduced motion (`prefers-reduced-motion: reduce`, or the platform's own setting), show only the
+- With reduced motion (`prefers-reduced-motion: reduce` on the web, animator scale 0 on Android, Reduce Motion on iOS), show only the
   rest frame and never animate. The shimmer stops too.
 - The film is one image to assistive tech: give it a description of the whole story, in order
   ("A phone showing a swipe down on Home that does nothing, then…").

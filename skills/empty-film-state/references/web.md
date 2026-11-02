@@ -6,8 +6,17 @@ shimmer, 3 loops then a rest frame, pausing off screen and in hidden tabs, and a
 under `prefers-reduced-motion`. Copy it into the project (with `example-film.js` as a starting
 script) rather than re-implementing it, so films look the same on every product.
 
-`assets/demo.html` runs the example. Serve the folder (`python3 -m http.server`) and open
-`demo.html`; add `?t=6.4` to hold one second of the script, and `&theme=dark` for dark mode.
+Two examples come with it. Serve the folder (`python3 -m http.server`) and open either page;
+add `?t=6.4` to hold one second of the script, and `&theme=dark` for dark mode.
+
+| Example | Device | Story | Page |
+|---|---|---|---|
+| `webapp-film.js` | browser | A desktop app with no projects: the pointer clicks New project, types a name, picks a colour, clicks Create, and the project lands in the list and the sidebar | `webapp-demo.html`: a full app page (sidebar, top bar, search) with the state in its main area |
+| `example-film.js` | phone | A tap on New, a name typed into a bottom sheet, Save, the project landing at the top | `demo.html`: the state on its own |
+
+Start from `webapp-film.js` for a desktop web app and `example-film.js` for a mobile web page.
+`webapp-film.js` shows the pointer pattern: one `f.pointer` path through every control, a click
+on each, and the dialog drawn in `drawOverScreen` so it sits over the whole window.
 
 ## Pick the device
 
