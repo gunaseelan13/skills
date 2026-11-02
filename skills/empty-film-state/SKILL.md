@@ -1,6 +1,7 @@
 ---
 name: empty-film-state
 description: Design and build an empty state or feature explainer as a short looping skeleton film on a half phone (or browser window), with a title, one-line description and actions. Use when a list or page has nothing in it yet, when a feature needs a "how it works" before it is turned on, or when asked for an "empty film state", "empty screen film", "explainer film" or "EmptyFilmState".
+license: MIT
 ---
 
 # Empty Film State

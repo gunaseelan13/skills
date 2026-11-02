@@ -13,3 +13,7 @@ npx skills add gunaseelan13/skills --skill empty-film-state
 
 Comes with a framework-free canvas engine (`assets/skeleton-film.js`) and a demo. To see it, serve
 `skills/empty-film-state/assets` (`python3 -m http.server`) and open `demo.html`.
+
+## License
+
+MIT, see [LICENSE](LICENSE).
